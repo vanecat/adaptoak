@@ -1,0 +1,63 @@
+<html ng-app="adaptOak">
+<head>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script src="game-data.js"></script>
+    <script src="game.js"></script>
+
+    <link rel="stylesheet" href="index.css"/>
+</head>
+<body>
+
+<!-- Selections of Typologies/Adaptation Strategies -->
+<div ng-controller="selectionCtrl">
+
+    <!-- Typology -->
+    <div class="typology">
+        <div class="item" ng-class="getTypologyState(t)"
+             ng-repeat="t in typologies"
+             ng-click="selectTypology(t)"
+        >
+            <div>{{t.label}}</div>
+            <img ng-src="{{getIconPath('typology', t)}}" />
+        </div>
+    </div>
+
+    <!--Adaptation-->
+    <div class="adaptation">
+        <div class="item" ng-class="getAdaptationState(a)"
+             ng-repeat="a in adaptations"
+             ng-click="selectAdaptation(a)"
+             ng-if="isTypologyAdaptationApplicable(a)"
+        >
+            <div>{{a.label}}</div>
+            <img ng-src="{{getIconPath('adaptation', a)}}" />
+        </div>
+    </div>
+</div>
+
+<!-- Results / Services Data -->
+<div ng-controller="resultCtrl">
+
+    <div class="typologyAdaptation" ng-if="hasResult()">
+        <div class="item">
+            <div>{{getAdaptation().label}}</div>
+            <img ng-src="{{getIconPath('adaptation', getAdaptation())}}" />
+        </div>
+        <span>+</span>
+        <div class="item">
+            <div>{{getTypology().label}}</div>
+            <img ng-src="{{getIconPath('typology', getTypology())}}" />
+        </div>
+        <span>=</span>
+        <div class="item">
+            <img ng-src="{{getTypologyAdaptationIconPath()}}" />
+        </div>
+
+        <div>Services Data.... $$$$ $$$$ $$$</div>
+    </div>
+
+</div>
+</body>
+</html>
