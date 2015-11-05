@@ -28,9 +28,6 @@ gulp.task('serve', function () {
   });
 });
 
-// Dev task
-gulp.task('dev', ['views', 'styles', 'lint', 'browserify', 'watch'], function() {});
-
 // JSLint task
 gulp.task('lint', function() {
   gulp.src('client/scripts/*.js')
@@ -108,5 +105,11 @@ gulp.task('watch', ['serve', 'lint'], function() {
   gulp.watch('./public/**').on('change', refresh.changed);
 
 });
+
+// Dev task
+gulp.task('dev', ['views', 'styles', 'lint', 'browserify', 'watch'], function() {});
+
+// Build task
+gulp.task('build', ['views', 'styles', 'lint', 'browserify'], function() {});
 
 gulp.task('default', ['dev']);
