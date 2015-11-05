@@ -82,7 +82,10 @@ gulp.task('views', function() {
   .pipe(gulp.dest('public/views/'));
 });
 
+var isWatching = false;
+
 gulp.task('watch', ['serve', 'lint'], function() {
+  isWatching = true
   // Start live reload server
   refresh.listen();
 
@@ -103,7 +106,14 @@ gulp.task('watch', ['serve', 'lint'], function() {
   ]);
 
   gulp.watch('./public/**').on('change', refresh.changed);
+});
 
+gulp.on('stop', function() {
+    if (!isWatching) {
+        process.nextTick(function() {
+            process.exit(0);
+        });
+    }
 });
 
 // Dev task
