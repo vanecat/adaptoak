@@ -3,8 +3,8 @@ Adapt Oakland Web UI
 
 ## Installation
 
-- git clone http://github.com/Hyra/Frickle.git myApp
-- cd myApp
+- git clone https://github.com/vanecat/adaptoak.git
+- cd adaptoak
 - npm install
 - gulp
 

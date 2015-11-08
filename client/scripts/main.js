@@ -7,6 +7,7 @@ var app = angular.module('MyApp', [uiRoute]);
 
 require('./services/Auth').inject(app);
 require('./directives/ExampleDirective').inject(app);
+require('./directives/Map').inject(app);
 
 app.config(function($locationProvider, $stateProvider) {
 
@@ -22,8 +23,13 @@ app.config(function($locationProvider, $stateProvider) {
     url: '/second-page',
     controller: require('./controllers/ExampleCtrl').inject(app),
     templateUrl: 'views/secondary.html'
+  })
+  .state('map', {
+    url: '/map',
+    controller: require('./controllers/ExampleCtrl').inject(app),
+    templateUrl: 'views/map.html'
   });
-
+  
 });
 
 app.run();
