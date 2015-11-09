@@ -1,0 +1,21 @@
+{ 
+    "model": "map",
+    "documents": [
+        {
+          "name": "myMap",
+          "data":  {
+            "shiud21": {
+              "source": "Mapbox://urlTothesourceData",
+              "style": "vegetation_line_layer"
+            },
+            "haufad2": {
+              "source": "Mapbox://urlTothesourceData",
+              "style": "vegetation_line_layer"
+            }
+          },
+          "tags": [
+            "last_tag"
+          ]
+        }
+    ]
+}

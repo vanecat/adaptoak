@@ -32,7 +32,7 @@ module.exports = function(app, passport) {
   app.get('/api/login/success', function(req, res) {
     res.status(200).send({user: req.user});
   });
-
+  
 };
 
 // route middleware to make sure a user is logged in
