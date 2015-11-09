@@ -18,7 +18,6 @@ exports.controller = function($scope, $stateParams, Map, MapStyle) {
   // FIXME: Placeholder just loads the first map.
   // Instead of passing map_id, I should be passing tags in. The tags should be used to get an array of maps.
   // also, after loading maps, I should be iterating over the mapstyle objects in each map and loading these styles as well.
-
   var map_data;
   Map.get(null, function(data) {
    map_data = data.payload[0].data[map_id]
@@ -35,6 +34,11 @@ exports.controller = function($scope, $stateParams, Map, MapStyle) {
       zoom: 15 // starting zoom
   });
 
+  // Everything is still hard coded here.
+  // - this stuff should actually be in an 'addOverlay' method for the controller
+  // This method would also update the data structure used to generate the layer toggle UI.
+  // Once the active tags are passed into this controller, they would be used to toggle the available overlays. 
+  // All overlays should always be available, but only those that match the active tags should be toggled on.
   map.on('style.load', function () {
 
     map.addSource('2015_parcels', {
