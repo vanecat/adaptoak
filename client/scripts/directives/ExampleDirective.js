@@ -1,7 +1,7 @@
 'use strict';
 
 exports.inject = function(app) {
-  app.directive('exampleDirective', exports.directive);
+  app.directive('example', exports.directive);
   return exports.directive;
 };
 

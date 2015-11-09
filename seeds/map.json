@@ -4,12 +4,9 @@
         {
           "name": "myMap",
           "data":  {
-            "shiud21": {
-              "source": "Mapbox://urlTothesourceData",
-              "style": "vegetation_line_layer"
-            },
-            "haufad2": {
-              "source": "Mapbox://urlTothesourceData",
+            "cdc0d47d": {
+              "source": "mapbox://johnvf.cdc0d47d",
+              "source_layer": "oakland_public_update_2015",
               "style": "vegetation_line_layer"
             }
           },

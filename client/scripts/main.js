@@ -1,13 +1,17 @@
 'use strict';
-
 require('angular');
 
 var uiRoute = require('angular-ui-router');
-var app = angular.module('MyApp', [uiRoute]);
+var ngResource = require('angular-resource');
+
+var app = angular.module('MyApp', [uiRoute, ngResource]);
 
 require('./services/Auth').inject(app);
+require('./services/Map').inject(app);
+require('./services/MapStyle').inject(app);
+
 require('./directives/ExampleDirective').inject(app);
-require('./directives/Map').inject(app);
+require('./directives/MapDirective').inject(app);
 
 app.config(function($locationProvider, $stateProvider) {
 
@@ -25,8 +29,8 @@ app.config(function($locationProvider, $stateProvider) {
     templateUrl: 'views/secondary.html'
   })
   .state('map', {
-    url: '/map',
-    controller: require('./controllers/ExampleCtrl').inject(app),
+    url: '/map/:map_id',
+    controller: require('./controllers/MapCtrl').inject(app),
     templateUrl: 'views/map.html'
   });
   
