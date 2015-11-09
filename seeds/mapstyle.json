@@ -1,0 +1,19 @@
+{ 
+    "model": "mapstyle",
+    "documents": [
+      {
+       "name": "vegetation_line_layer",
+        "data": {
+          "type": "line",
+          "layout": {
+              "line-join": "round",
+              "line-cap": "round"
+          },
+          "paint": {
+              "line-color": "#ff69b4",
+              "line-width": 1
+          }
+        } 
+      }
+    ]
+}
