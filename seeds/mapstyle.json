@@ -2,18 +2,28 @@
     "model": "mapstyle",
     "documents": [
       {
-       "name": "vegetation_line_layer",
+       "name": "pink_fill",
+       "data": {
+          "type": "fill",
+          "paint": {
+            "fill-color": "#ff69b4",
+            "fill-opacity": 0.5
+          }
+        } 
+      },
+      {
+        "name": "pink_line",
         "data": {
           "type": "line",
           "layout": {
-              "line-join": "round",
-              "line-cap": "round"
+            "line-join": "round",
+            "line-cap": "round"
           },
           "paint": {
-              "line-color": "#ff69b4",
-              "line-width": 1
+            "line-color": "#ff69b4",
+            "line-width": 1
           }
-        } 
+        }
       }
     ]
 }
