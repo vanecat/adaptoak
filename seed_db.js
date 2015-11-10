@@ -40,21 +40,4 @@ function seed_db( data ){
     }); 
 }
 
-load_data( seed_db );
- 
-// // Data array containing seed data - documents organized by Model 
-// var data = [
-//     { 
-//         'model': 'Model1',
-//         'documents': [
-//             {
-//                 'name': 'Doc1'
-//                 'value': 200
-//             },
-//             {
-//                 'name': 'Doc2'
-//                 'value': 400
-//             }
-//         ]
-//     }
-// ];  
+load_data( seed_db ); 
