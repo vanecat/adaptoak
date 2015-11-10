@@ -16,7 +16,9 @@ require('./directives/MapDirective').inject(app);
 // Array to describe UI state, an array of tags selected by the user for currently toggled
 // 'Ecosystem Services', 'Typologies', 'Adaptation Strategies' etc...
 // Some other set up could be used, but this data should be passed to all controllers.
-var active_tags = []
+// FIXME: It seems like order is important with tags - we may want to consistently alpha sort them.
+// window.active_tags = ["last_tag", "another_tag"].sort();
+window.active_tags = ["last_tag"].sort();
 
 // FIXME: map_id is probably not the right @param to pass to a route.
 // Perhaps the array of tags, concatenated? (since this should be the source of truth for API state)
@@ -31,17 +33,17 @@ app.config(function($locationProvider, $stateProvider) {
   .state('home', {
     url: '/',
     templateUrl: 'views/home.html',
-    controller: require('./controllers/ExampleCtrl').inject(app)
+    controller: require('./controllers/ExampleCtrl').inject(app),
   })
   .state('second', {
     url: '/second-page',
     controller: require('./controllers/ExampleCtrl').inject(app),
-    templateUrl: 'views/secondary.html'
+    templateUrl: 'views/secondary.html',
   })
   .state('map', {
-    url: '/map/:map_id',
+    url: '/map/:map_url',
     controller: require('./controllers/MapCtrl').inject(app),
-    templateUrl: 'views/map.html'
+    templateUrl: 'views/map.html',
   });
   
 });
