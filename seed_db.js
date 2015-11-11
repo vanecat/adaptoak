@@ -35,9 +35,8 @@ function seed_db( data ){
             console.log(JSON.stringify(data))
             // Callback to populate DB once collections have been cleared 
             seeder.populateModels(data);
-     
         });
     }); 
 }
 
-load_data( seed_db ); 
+load_data( seed_db );

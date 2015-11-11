@@ -7,8 +7,8 @@ var ngResource = require('angular-resource');
 var app = angular.module('MyApp', [uiRoute, ngResource]);
 
 require('./services/Auth').inject(app);
-require('./services/Map').inject(app);
-require('./services/MapStyle').inject(app);
+require('./services/MapService').inject(app);
+require('./services/MapStyleService').inject(app);
 
 require('./directives/ExampleDirective').inject(app);
 require('./directives/MapDirective').inject(app);

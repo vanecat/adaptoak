@@ -7,34 +7,16 @@ exports.inject = function(app) {
   return exports.controller;
 };
 
-exports.controller = function($scope, $stateParams, Map, MapStyle) {
+exports.controller = function($scope, $stateParams, MapService, MapStyleService) {
 
-  // FIXME: Placeholder just loads the first map.
-  // Instead of passing map_id, I should be passing tags in. The tags should be used to get an array of maps.
-  // also, after loading maps, I should be iterating over the mapstyle objects in each map and loading these styles as well.
+  // Load all relevant map layers for 'design', 'analyze' tags etc..
+  // then, use other map tags to toggle layers on and off.
 
-  // FIXME: Move this code into loadData
-  // , then async call addSource + addLayer (or preload all maps but hide/show? - maybe this approach is best)
-  // Then the output of 'filter' simply toggles layers.
-  var maps,
-      styles,
-      tags = window.active_tags;
+  var maps = {};
+  var sources = {}
+  var styles = {};
 
-  Map.filter( tags, function(data){
-
-    maps = data.payload
-    styles = {};
-
-    maps.forEach( function( thisMap ){
-      thisMap.layers.forEach( function(layer){
-        var style = layer.style
-        if( !styles[ style ] ){
-          styles[style] = MapStyle.get({ 'filter[name]': style })
-        }
-      })
-    })
-
-  });
+  var tags = window.active_tags
 
   mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnZmIiwiYSI6IjFkZGY0OTk4Mjg5MDU0ZjNiYmU4YWFjODg2YzQ0ZTk2In0.cUp8RaZxpmq7A7KGVNucKQ';
 
@@ -45,59 +27,79 @@ exports.controller = function($scope, $stateParams, Map, MapStyle) {
       zoom: 15 // starting zoom
   });
 
-  // Everything is still hard coded here.
-  // - this stuff should actually be in an 'addOverlay' method for the controller
-  // This method would also update the data structure used to generate the layer toggle UI.
   // Once the active tags are passed into this controller, they would be used to toggle the available overlays. 
   // All overlays should always be available, but only those that match the active tags should be toggled on.
   map.on('style.load', function () {
-
-    console.log( maps )
-    console.log( styles )
-
-    map.addSource('2015_parcels', {
-        type: 'vector',
-        url:  "mapbox://johnvf.cdc0d47d" //maps[0].source
-    });
-
-    map.addLayer({
-        "id": "2015_parcels",
-        "type": "line",
-        "source": "2015_parcels",
-        "source-layer": "oakland_public_update_2015",
-        "layout": {
-          "line-join": "round",
-          "line-cap": "round"
-        },
-        "paint": {
-          "line-color": "#ff69b4",
-          "line-width": 1,
-        }
-    });
-
-    map.addLayer({
-        "id": "2015_parcels_fill",
-        "type": "fill",
-        "source": "2015_parcels",
-        "source-layer": "oakland_public_update_2015",
-        "paint": {
-          "fill-color": "#ff69b4",
-          "fill-opacity": 0.5
-        }
-    });
-
+    loadData( tags , maps, styles )
+    .then(addData.bind( null, map, maps, sources, styles));
   });
 
-  function loadData(){
+  // Obtain all maps, and styles that match the active tags from MongoDB
+  function loadData( tags , maps, styles ){
+    return new Promise(function(resolve, reject) {
+      
+      MapService.filter( tags, function(mapData){
+        mapData.payload.forEach( function( thisMap ){
 
+          maps[ thisMap.name ] = thisMap
+          var layerPromises = thisMap.layers.map( function(layer ){ 
+            return new Promise(function(resolve, reject) {
+              
+              if( styles[layer.style] === undefined ){
+                MapStyleService.get({ 'filter[name]': layer.style }, function (data){
+                  styles[ layer.style ] = data.payload[0]
+                  resolve();
+                });
+              }
+              else{
+                resolve();
+              }
+
+            })
+          })
+          Promise.all(layerPromises).then(resolve)
+        })
+      });
+    });
   }
 
-  function addSource( map ){
+  function addData( map, maps, sources, styles){
+    return new Promise(function(resolve, reject) {
 
+      for (var key in maps) {
+        maps[key].layers.forEach( function(layer){
+          addLayer(map, layer, sources, styles)
+        })
+      }
+      resolve();
+    }); 
   }
 
-  function addLayer( layer ){
+  function addLayer( map, layer, sources, styles){
+    console.log(map)
+    console.log(layer)
+    console.log(styles)
+    // sources[layer]
+    // Keep track of added layers and don't repeat
+    sources[layer.source] = true
 
+    map.addSource( layer.source , {
+        type: 'vector',
+        url:  layer.source //maps[0].source
+    });
+
+    map.addLayer({
+        "id": layer.source+layer.source_layer+layer.style,
+        "source": layer.source,
+        "source-layer":layer.source_layer,
+        "type": "fill",
+        // "paint": {
+        //   "fill-color": "#ff69b4",
+        //   "fill-opacity": 0.5
+        // }
+
+        // TODO Start with style data and merge this data in.
+    });
   }
 
 };

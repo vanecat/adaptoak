@@ -1,7 +1,7 @@
 'use strict';
 
 exports.inject = function(app) {
-  app.factory('MapStyle', exports.factory);
+  app.factory('MapStyleService', exports.factory);
   return exports.factory;
 };
 

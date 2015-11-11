@@ -7,7 +7,7 @@ function tags2filters( tags ){
 }
 
 exports.inject = function(app) {
-  app.factory('Map', exports.factory);
+  app.factory('MapService', exports.factory);
   return exports.factory;
 };
 
