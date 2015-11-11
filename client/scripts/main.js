@@ -3,8 +3,9 @@ require('angular');
 
 var uiRoute = require('angular-ui-router');
 var ngResource = require('angular-resource');
+var uiBootstrap = require('angular-ui-bootstrap');
 
-var app = angular.module('MyApp', [uiRoute, ngResource]);
+var app = angular.module('MyApp', [uiRoute, uiBootstrap]);
 
 require('./services/Auth').inject(app);
 require('./services/Map').inject(app);
