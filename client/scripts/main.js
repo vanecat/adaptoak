@@ -3,8 +3,7 @@
 require('angular');
 
 var uiRoute = require('angular-ui-router');
-var uiBootstrap = require('angular-ui-bootstrap');
-var app = angular.module('MyApp', [uiRoute, uiBootstrap]);
+var app = angular.module('MyApp', [uiRoute]);
 
 require('./services/Auth').inject(app);
 require('./directives/ExampleDirective').inject(app);

@@ -7,8 +7,6 @@ exports.inject = function(app) {
 };
 
 exports.controller = function($scope, Auth) {
-  $scope.singleModel = 1;
-
   $scope.testvar = 'Aap';
   $scope.auth = Auth;
 
