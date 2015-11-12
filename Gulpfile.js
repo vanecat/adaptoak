@@ -74,8 +74,7 @@ gulp.task('browserify', function() {
     debug: true
   })
   .bundle()
-  .pipe(source('main.js'))
-  .pipe(rename({ suffix: '.min'}));
+  .pipe(source('main.min.js'));
   return bundleStream.pipe(gulp.dest('./public/js'));
 });
 
