@@ -3,7 +3,7 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     source = require('vinyl-source-stream'),
-    browserify = require('gulp-browserify'),
+    browserify = require('browserify'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
@@ -53,28 +53,30 @@ gulp.task('styles', function() {
 
 });
 
-gulp.task('browserify', function() {
-  return gulp.src('./client/scripts/main.js')
-  .pipe(browserify({
-    debug: true
-  }))
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(concat('main.js'))
-  // .pipe(uglify({mangle: false}))
-  .pipe(rename({ suffix: '.min'}))
-  .pipe(sourcemaps.write('./'))
-  .pipe( gulp.dest('./public/js') )
-  // isWatching = true
-});
+// gulp.task('browserify', function() {
+//   return gulp.src('./client/scripts/main.js')
+//   .pipe(browserify({
+//     debug: true
+//   }))
+//   .pipe(sourcemaps.init({loadMaps: true}))
+//   .pipe(concat('main.js'))
+//   // .pipe(uglify({mangle: false}))
+//   .pipe(rename({ suffix: '.min'}))
+//   .pipe(sourcemaps.write('./'))
+//   .pipe( gulp.dest('./public/js') )
+//   // isWatching = true
+// });
 
-gulp.task('browserify-heroku', function() {
-  return gulp.src('./client/scripts/main.js')
-  .pipe(browserify({
+// Browserify task
+gulp.task('browserify', function() {
+  var bundleStream = browserify({
+    entries: ['./client/scripts/main.js'],
     debug: true
-  }))
-  .pipe(concat('main.js'))
-  .pipe(rename({ suffix: '.min'}))
-  .pipe( gulp.dest('./public/js') )
+  })
+  .bundle()
+  .pipe(source('main.js'))
+  .pipe(rename({ suffix: '.min'}));
+  return bundleStream.pipe(gulp.dest('./public/js'));
 });
 
 // Views task
