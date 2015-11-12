@@ -67,6 +67,16 @@ gulp.task('browserify', function() {
   // isWatching = true
 });
 
+gulp.task('browserify-heroku', function() {
+  return gulp.src('./client/scripts/main.js')
+  .pipe(browserify({
+    debug: true
+  }))
+  .pipe(concat('main.js'))
+  .pipe(rename({ suffix: '.min'}))
+  .pipe( gulp.dest('./public/js') )
+});
+
 // Views task
 gulp.task('views', function() {
   // Get our index.html
@@ -117,5 +127,8 @@ gulp.task('dev', ['views', 'styles', 'lint', 'browserify', 'watch'], function() 
 
 // Build task
 gulp.task('build', ['views', 'styles', 'lint', 'browserify'], function() {});
+
+// Build task
+gulp.task('heroku', ['views', 'styles', 'lint', 'browserify-heroku'], function() {});
 
 gulp.task('default', ['dev']);
