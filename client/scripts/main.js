@@ -18,7 +18,7 @@ require('./directives/ExampleDirective').inject(app);
 require('./directives/MapDirective').inject(app);
 require('./directives/SidenavDirective').inject(app);
 require('./directives/SidenavItemDirective').inject(app);
-require('./directives/AddthisDirective').inject(app);
+require('./directives/AddThisDirective').inject(app);
 
 // Array to describe UI state, an array of tags selected by the user for currently toggled
 // 'Ecosystem Services', 'Typologies', 'Adaptation Strategies' etc...
