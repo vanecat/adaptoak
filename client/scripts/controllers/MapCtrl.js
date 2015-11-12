@@ -39,67 +39,104 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
     return new Promise(function(resolve, reject) {
       
       MapService.filter( tags, function(mapData){
-        mapData.payload.forEach( function( thisMap ){
-
+        var mapPromises = mapData.payload.map( function( thisMap ){
           maps[ thisMap.name ] = thisMap
-          var layerPromises = thisMap.layers.map( function(layer ){ 
-            return new Promise(function(resolve, reject) {
-              
-              if( styles[layer.style] === undefined ){
-                MapStyleService.get({ 'filter[name]': layer.style }, function (data){
-                  styles[ layer.style ] = data.payload[0]
-                  resolve();
-                });
-              }
-              else{
-                resolve();
-              }
-
-            })
-          })
-          Promise.all(layerPromises).then(resolve)
+          return loadStyles( thisMap, styles )
         })
+        // Resolve when all the map data has been loaded
+        Promise.all( mapPromises ).then(resolve)
       });
     });
   }
 
-  function addData( map, maps, sources, styles){
+  function loadStyles( thisMap, styles ){
     return new Promise(function(resolve, reject) {
 
-      for (var key in maps) {
-        maps[key].layers.forEach( function(layer){
-          addLayer(map, layer, sources, styles)
+      var stylePromises = thisMap.layers.map( function(layer ){ 
+        return new Promise(function(resolve, reject) {
+          
+          if( !styles[layer.style] ){
+            MapStyleService.get({ 'filter[name]': layer.style }, function (data){
+              styles[ layer.style ] = data.payload[0]
+              resolve();
+            });
+          }
+          else{
+            resolve();
+          }
+
         })
-      }
-      resolve();
-    }); 
+      })
+      // Resolve when the style data for ever layer has been loaded
+      Promise.all(stylePromises).then(resolve)
+    });
+  }
+
+  function addData( map, maps, sources, styles){
+
+    var ui = document.getElementById('map-ui');
+
+    for (var key in maps) {
+      maps[key].layers.forEach( function(layer){
+        addLayer(map, layer, sources, styles)
+        // addLayerUI(map, ui, layer)
+      })
+    }
   }
 
   function addLayer( map, layer, sources, styles){
-    console.log(map)
-    console.log(layer)
-    console.log(styles)
-    // sources[layer]
-    // Keep track of added layers and don't repeat
-    sources[layer.source] = true
 
-    map.addSource( layer.source , {
+
+    if( !sources[layer.source] ){
+      map.addSource( layer.source , {
         type: 'vector',
         url:  layer.source //maps[0].source
-    });
+      });
+      sources[layer.source] = true
+    }
 
-    map.addLayer({
-        "id": layer.source+layer.source_layer+layer.style,
-        "source": layer.source,
-        "source-layer":layer.source_layer,
-        "type": "fill",
-        // "paint": {
-        //   "fill-color": "#ff69b4",
-        //   "fill-opacity": 0.5
-        // }
+    var style = JSON.parse(JSON.stringify(styles[layer.style].data))
 
-        // TODO Start with style data and merge this data in.
-    });
+    // Associate the style with the source
+    style['id'] = layer.source+layer.source_layer+layer.style
+    style['source'] = layer.source
+    style['source-layer'] = layer.source_layer
+
+    map.addLayer( style );
+  }
+
+  function addLayerUI( map, ui, layer ){
+    var id = layer.source+layer.source_layer+layer.style
+
+    var item = document.createElement('li');
+    var link = document.createElement('a');
+
+    link.href = '#';
+    link.innerHTML = id;
+
+    
+    link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (map.hasLayer(id)) {
+            map.removeLayer(id);
+            map.removeLayer(id);
+            // map.legendControl.removeLegend(layer.getTileJSON().legend);
+            
+            this.className = '';
+        } else {
+        //     map.addLayer(id);
+        //     map.addLayer(id);
+        //     this.className = 'active';
+        //     map.legendControl.addLegend(layer.getTileJSON().legend);
+
+        }
+       thelayer = layer;  
+    };
+
+    item.appendChild(link);
+    ui.appendChild(item);
   }
 
 };

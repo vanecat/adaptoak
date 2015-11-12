@@ -13,15 +13,10 @@
               "source": "mapbox://johnvf.cdc0d47d",
               "source_layer": "oakland_public_update_2015",
               "style": "pink_line"
-            },
-            {
-              "source": "mapbox://johnvf.877bd2fa",
-              "source_layer": "StreetStructures",
-              "style": "pink_line"
             }
           ],
           "tags": [
-            "last_tag"
+            "another_tag","first_tag"
           ]
         },
         {

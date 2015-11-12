@@ -18,7 +18,7 @@ require('./directives/MapDirective').inject(app);
 // Some other set up could be used, but this data should be passed to all controllers.
 // FIXME: It seems like order is important with tags - we may want to consistently alpha sort them.
 // window.active_tags = ["last_tag", "another_tag"].sort();
-window.active_tags = ["last_tag"].sort();
+window.active_tags = ["first_tag"].sort();
 
 // FIXME: map_id is probably not the right @param to pass to a route.
 // Perhaps the array of tags, concatenated? (since this should be the source of truth for API state)
