@@ -5,12 +5,14 @@ var uiRoute = require('angular-ui-router');
 var ngResource = require('angular-resource');
 var uiBootstrap = require('angular-ui-bootstrap');
 
-var app = angular.module('MyApp', [uiRoute, uiBootstrap]);
+var app = angular.module('MyApp', [uiRoute, uiBootstrap, ngResource]);
 
 require('./services/Auth').inject(app);
+
 require('./services/CustomStateService').inject(app);
-require('./services/Map').inject(app);
-require('./services/MapStyle').inject(app);
+require('./services/MapService').inject(app);
+require('./services/MapStyleService').inject(app);
+
 
 require('./directives/ExampleDirective').inject(app);
 require('./directives/MapDirective').inject(app);
@@ -36,10 +38,10 @@ app.config(function($locationProvider, $stateProvider) {
   .state('home', {
     url: '/',
     templateUrl: 'views/home.html',
-    controller: require('./controllers/ExampleCtrl').inject(app)
+    controller: require('./controllers/ExampleCtrl').inject(app),
   })
   .state('map', {
-    url: '/map/:map_id',
+    url: '/map/:map_url',
     controller: require('./controllers/MapCtrl').inject(app),
     templateUrl: 'views/map.html'
   })

@@ -30,6 +30,7 @@
     "express-session": "^1.9.1",
     "gulp": "~3.8.8",
     "gulp-autoprefixer": "^1.0.1",
+    "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.4.3",
     "gulp-concat-css": "^2.2.0",
     "gulp-csscomb": "^3.0.6",

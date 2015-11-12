@@ -5,7 +5,7 @@ var MapSchema = mongoose.Schema({
     type: String,
     width: Number,
     height: Number,
-    data: {},
+    layers: {},
     tags: [ String ]
 });
 

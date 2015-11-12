@@ -24,6 +24,20 @@
             "line-width": 1
           }
         }
+      },
+      {
+        "name": "blue_line",
+        "data": {
+          "type": "line",
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          "paint": {
+            "line-color": "#91FFF5",
+            "line-width": 1
+          }
+        }
       }
     ]
 }
