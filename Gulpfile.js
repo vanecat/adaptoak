@@ -47,13 +47,13 @@ gulp.task('styles', function() {
   // Optionally add autoprefixer
   .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 8'))
   // These last two should look familiar now :)
-  // Concatenate imported external CSS
-  .pipe( concatCss('/main.css') )
+  // Concatenate imported external CSS 
+  // .pipe( concatCss('/main.css') ) <- This breaks when heroku tries to run it
   .pipe(gulp.dest('./public/css/'))
 
 });
 
-// gulp.task('browserify', function() {
+// gulp.task('browserify', function() { <- This breaks when heroku tries to run it
 //   return gulp.src('./client/scripts/main.js')
 //   .pipe(browserify({
 //     debug: true
@@ -129,7 +129,5 @@ gulp.task('dev', ['views', 'styles', 'lint', 'browserify', 'watch'], function() 
 // Build task
 gulp.task('build', ['views', 'styles', 'lint', 'browserify'], function() {});
 
-// Build task
-gulp.task('heroku', ['views', 'styles', 'lint', 'browserify-heroku'], function() {});
 
 gulp.task('default', ['dev']);
