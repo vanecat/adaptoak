@@ -7,9 +7,9 @@ exports.inject = function(app) {
   return exports.controller;
 };
 
-exports.controller = function($scope, $stateParams, Map, MapStyle) {
+exports.controller = function($scope, Map) {
 
-  var map_id = $stateParams.map_id
+  var map_id = 'cdc0d47d';
 
   // var map_data = Map.get({ id: map_id}, function() {
   //   console.log(map_data);

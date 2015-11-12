@@ -1,0 +1,26 @@
+
+.addthis {
+  height: 30px;
+  width: 100px;
+
+  border: red dotted 1px;
+
+  padding: 0;
+  margin: 0;
+
+  display: inline;
+  overflow: hidden;
+
+  position: absolute;
+  right: 100px;
+  top: 100px;
+
+  list-style: none;
+}
+
+.addthis li {
+  display: inline;
+
+  padding: 1px;
+  margin: 1px 5px;
+}

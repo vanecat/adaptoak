@@ -1,4 +1,7 @@
 @import 'map';
+@import 'bootstrap';
+@import 'sidenav';
+@import 'addthis';
 
 body {
   background: #E9E9E9;
@@ -14,3 +17,20 @@ a {
     text-decoration: underline;
   }
 }
+
+
+.content {
+  background-color: #F1F1F1;
+
+  height: 500px;
+  width: 95%;
+
+  margin-left: 50px;
+  padding: 10px;
+
+  border: aquamarine solid 1px;
+
+  display: inline-block;
+}
+
+
