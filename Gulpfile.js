@@ -7,16 +7,12 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    concatCss = require('gulp-concat-css'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     refresh = require('gulp-livereload'),
     buffer = require('vinyl-buffer'),
     nodemon = require('gulp-nodemon');
-
-// Flag to keep livereload working properly, feels hacky
-var isWatching = false;
 
 var expressServer = require('./server');
 gulp.task('serve_', function() {
@@ -25,7 +21,7 @@ gulp.task('serve_', function() {
 });
 
 gulp.task('serve', function () {
-  nodemon({ script: 'server.js', ext: 'json js', ignore: ['./public/*', './client/*'] })
+  nodemon({ script: 'server.js', ext: 'json js', ignore: ['public/*', 'client/*'] })
   .on('change', ['lint'])
   .on('restart', function () {
     console.log('Restarted webserver')
@@ -34,38 +30,21 @@ gulp.task('serve', function () {
 
 // JSLint task
 gulp.task('lint', function() {
-  gulp.src('./client/scripts/*.js')
+  gulp.src('client/scripts/*.js')
   .pipe(jshint())
   .pipe(jshint.reporter('default'));
 });
 
 // Styles task
 gulp.task('styles', function() {
-  gulp.src('./client/styles/main.scss')
+  gulp.src('client/styles/*.scss')
   // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
   .pipe(sass({onError: function(e) { console.log(e); } }))
   // Optionally add autoprefixer
   .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 8'))
   // These last two should look familiar now :)
-  // Concatenate imported external CSS 
-  // .pipe( concatCss('/main.css') ) <- This breaks when heroku tries to run it
-  .pipe(gulp.dest('./public/css/'))
-
+  .pipe(gulp.dest('public/css/'));
 });
-
-// gulp.task('browserify', function() { <- This breaks when heroku tries to run it
-//   return gulp.src('./client/scripts/main.js')
-//   .pipe(browserify({
-//     debug: true
-//   }))
-//   .pipe(sourcemaps.init({loadMaps: true}))
-//   .pipe(concat('main.js'))
-//   // .pipe(uglify({mangle: false}))
-//   .pipe(rename({ suffix: '.min'}))
-//   .pipe(sourcemaps.write('./'))
-//   .pipe( gulp.dest('./public/js') )
-//   // isWatching = true
-// });
 
 // Browserify task
 gulp.task('browserify', function() {
@@ -78,18 +57,32 @@ gulp.task('browserify', function() {
   return bundleStream.pipe(gulp.dest('./public/js'));
 });
 
+// Browserify task
+gulp.task('minify', function() {
+  var minifyStream = gulp.src('./public/js/main.js')
+  .pipe(buffer())
+  .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+  .pipe(uglify({mangle: false}))
+  .pipe(rename({ suffix: '.min'}))
+  .pipe(sourcemaps.write('./'));
+  //  // writes .map file
+  return minifyStream.pipe(gulp.dest('./public/js'));
+});
+
 // Views task
 gulp.task('views', function() {
   // Get our index.html
-  gulp.src('./client/index.html')
+  gulp.src('client/index.html')
   // And put it in the public folder
-  .pipe(gulp.dest('./public/'));
+  .pipe(gulp.dest('public/'));
 
   // Any other view files from client/views
-  gulp.src('./client/views/**/*')
+  gulp.src('client/views/**/*')
   // Will be put in the public/views folder
-  .pipe(gulp.dest('./public/views/'));
+  .pipe(gulp.dest('public/views/'));
 });
+
+var isWatching = false;
 
 gulp.task('watch', ['serve', 'lint'], function() {
   isWatching = true
@@ -97,18 +90,18 @@ gulp.task('watch', ['serve', 'lint'], function() {
   refresh.listen();
 
   // Watch our scripts, and when they change run lint and browserify
-  gulp.watch(['./client/scripts/*.js', './client/scripts/**/*.js'],[
+  gulp.watch(['client/scripts/*.js', 'client/scripts/**/*.js'],[
     'lint',
     'browserify'
   ]);
 
   // Watch our sass files
-  gulp.watch(['./client/styles/**/*.scss'], [
+  gulp.watch(['client/styles/**/*.scss'], [
     'styles'
   ]);
 
   // Watch view files
-  gulp.watch(['./client/**/*.html'], [
+  gulp.watch(['client/**/*.html'], [
     'views'
   ]);
 
@@ -128,6 +121,5 @@ gulp.task('dev', ['views', 'styles', 'lint', 'browserify', 'watch'], function() 
 
 // Build task
 gulp.task('build', ['views', 'styles', 'lint', 'browserify'], function() {});
-
 
 gulp.task('default', ['dev']);
