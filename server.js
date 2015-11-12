@@ -74,11 +74,15 @@ if(USE_API) {
   // Connect to MongoDB
   console.log('Connecting to DB:', config.db);
   mongoose.connect(config.db);
+  // Setup REST routes
+  var mers = require('mers');
+  app.use('/api', mers({uri: config.db}).rest());
 
   require('./api/config/passport')(passport);
 
   // API Routes
   require('./api/routes')(app, passport);
+
 }
 
 // HTML5 Pushstate mode

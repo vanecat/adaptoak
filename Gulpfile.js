@@ -3,10 +3,11 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     source = require('vinyl-source-stream'),
-    browserify = require('browserify'),
+    browserify = require('gulp-browserify'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
+    concatCss = require('gulp-concat-css'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -37,36 +38,29 @@ gulp.task('lint', function() {
 
 // Styles task
 gulp.task('styles', function() {
-  gulp.src('client/styles/*.scss')
+  gulp.src('client/styles/main.scss')
   // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
   .pipe(sass({onError: function(e) { console.log(e); } }))
   // Optionally add autoprefixer
   .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 8'))
   // These last two should look familiar now :)
-  .pipe(gulp.dest('public/css/'));
+  // Concatenate imported external CSS
+  .pipe( concatCss('/main.css') )
+  .pipe(gulp.dest('public/css/'))
+
 });
 
-// Browserify task
 gulp.task('browserify', function() {
-  var bundleStream = browserify({
-    entries: ['./client/scripts/main.js'],
+  gulp.src('client/scripts/main.js')
+  .pipe(browserify({
     debug: true
-  })
-  .bundle()
-  .pipe(source('core.js'));
-  return bundleStream.pipe(gulp.dest('./public/js'));
-});
-
-// Browserify task
-gulp.task('minify', function() {
-  var minifyStream = gulp.src('./public/js/core.js')
-  .pipe(buffer())
-  .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-  .pipe(uglify({mangle: false}))
+  }))
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(concat('main.js'))
+  // .pipe(uglify({mangle: false}))
   .pipe(rename({ suffix: '.min'}))
-  .pipe(sourcemaps.write('./'));
-  //  // writes .map file
-  return minifyStream.pipe(gulp.dest('./public/js'));
+  .pipe(sourcemaps.write('./'))
+  .pipe( gulp.dest('public/js') )
 });
 
 // Views task

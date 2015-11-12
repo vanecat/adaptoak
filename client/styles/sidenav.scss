@@ -1,0 +1,68 @@
+
+.sidenav {
+  background-color: #D8D8D8;
+
+  height: 500px;
+  width: 50px;
+
+  padding: 5px;
+  text-align: center;
+
+  border: blue dashed 2px;
+
+  display: block;
+  position: absolute;
+}
+
+.sidenav [sidenav-item] {
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+
+  cursor: hand;
+}
+
+.sidenav .active[sidenav-item] {
+  border: red double 4px;
+}
+
+.sidenav [sidenav-item][ui-sref=home]{
+  margin-bottom: 20px;
+}
+
+.sidenav .bottom {
+  position: absolute;
+  bottom: 5px;
+}
+
+
+.sidenav [ui-sref=home] {
+  background-image: url("/images/sidenav/home.png");
+
+}
+
+.sidenav [ui-sref=toolbox] {
+  background-image: url("/images/sidenav/toolbox.png");
+}
+
+
+.sidenav [ui-sref=toolbox-design] {
+  background-image: url("/images/sidenav/toolbox-design.png");
+}
+
+.sidenav [ui-sref=toolbox-data] {
+  background-image: url("/images/sidenav/toolbox-data.png");
+}
+
+.sidenav [ui-sref=map] {
+  background-image: url("/images/sidenav/map.png");
+}
+
+.sidenav [ui-sref=about] {
+  background-image: url("/images/sidenav/about.png");
+}
+
+.sidenav [ui-sref=share] {
+  background-image: url("/images/sidenav/share.png");
+}
+

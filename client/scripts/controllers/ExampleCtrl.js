@@ -6,7 +6,7 @@ exports.inject = function(app) {
   return exports.controller;
 };
 
-exports.controller = function($scope, Auth) {
+exports.controller = function($scope, $stateParams, Auth) {
   $scope.testvar = 'Aap';
   $scope.auth = Auth;
 
