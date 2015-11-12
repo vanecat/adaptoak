@@ -79,7 +79,7 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
     for (var key in maps) {
       maps[key].layers.forEach( function(layer){
         addLayer(map, layer, sources, styles)
-        // addLayerUI(map, ui, layer)
+        addLayerUI(map, ui, layer, addLayer.bind(null, map, layer, sources, styles) )
       })
     }
   }
@@ -95,9 +95,11 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
       sources[layer.source] = true
     }
 
+    // Deep copy this style
     var style = JSON.parse(JSON.stringify(styles[layer.style].data))
 
-    // Associate the style with the source
+    // Associate this style with the source
+    // Need a better id
     style['id'] = layer.source+layer.source_layer+layer.style
     style['source'] = layer.source
     style['source-layer'] = layer.source_layer
@@ -105,7 +107,8 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
     map.addLayer( style );
   }
 
-  function addLayerUI( map, ui, layer ){
+  function addLayerUI( map, ui, layer , addLayerCallback ){
+    // Need a better id
     var id = layer.source+layer.source_layer+layer.style
 
     var item = document.createElement('li');
@@ -119,20 +122,15 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
         e.preventDefault();
         e.stopPropagation();
 
-        if (map.hasLayer(id)) {
+        if (map.getLayer(id)) {
             map.removeLayer(id);
-            map.removeLayer(id);
-            // map.legendControl.removeLegend(layer.getTileJSON().legend);
-            
             this.className = '';
+            // map.legendControl.removeLegend(layer.getTileJSON().legend);
         } else {
-        //     map.addLayer(id);
-        //     map.addLayer(id);
-        //     this.className = 'active';
-        //     map.legendControl.addLegend(layer.getTileJSON().legend);
-
+            addLayerCallback();
+            this.className = 'active';
+            // map.legendControl.addLegend(layer.getTileJSON().legend);
         }
-       thelayer = layer;  
     };
 
     item.appendChild(link);
