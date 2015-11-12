@@ -27,6 +27,9 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
       zoom: 15 // starting zoom
   });
 
+  // Attach an empty hash to the map object to toggle visible content
+  map.shown = {}
+
   // Once the active tags are passed into this controller, they would be used to toggle the available overlays. 
   // All overlays should always be available, but only those that match the active tags should be toggled on.
   map.on('style.load', function () {
@@ -77,11 +80,25 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
     var ui = document.getElementById('map-ui');
 
     for (var key in maps) {
-      maps[key].layers.forEach( function(layer){
-        addLayer(map, layer, sources, styles)
-        addLayerUI(map, ui, layer, addLayer.bind(null, map, layer, sources, styles) )
-      })
+      var addMap = addMapLayers.bind(null, map, maps[key], sources, styles)
+      var removeMap = removeMapLayers.bind( null, map,  maps[key] )
+      addToMapUI(map, ui, maps[key], addMap , removeMap )
     }
+  }
+
+  function removeMapLayers( map, mapData ){
+    mapData.layers.forEach( function(layer){
+      // Need a better id
+      var id = layer.source+layer.source_layer+layer.style
+      map.removeLayer(id);
+    })
+  }
+
+  function addMapLayers( map, mapData, sources, styles){
+
+    mapData.layers.forEach( function(layer){
+      addLayer(map, layer, sources, styles)
+    })
   }
 
   function addLayer( map, layer, sources, styles){
@@ -107,28 +124,26 @@ exports.controller = function($scope, $stateParams, MapService, MapStyleService)
     map.addLayer( style );
   }
 
-  function addLayerUI( map, ui, layer , addLayerCallback ){
-    // Need a better id
-    var id = layer.source+layer.source_layer+layer.style
-
+  function addToMapUI( map, ui, mapData , addCallback, removeCallback ){
     var item = document.createElement('li');
     var link = document.createElement('a');
 
     link.href = '#';
-    link.innerHTML = id;
+    link.innerHTML = mapData.name;
 
-    
     link.onclick = function(e) {
         e.preventDefault();
         e.stopPropagation();
 
-        if (map.getLayer(id)) {
-            map.removeLayer(id);
+        if ( map.shown[mapData.name] ) {
+            removeCallback();
             this.className = '';
+            map.shown[mapData.name] = false
             // map.legendControl.removeLegend(layer.getTileJSON().legend);
         } else {
-            addLayerCallback();
+            addCallback();
             this.className = 'active';
+            map.shown[mapData.name] = true
             // map.legendControl.addLegend(layer.getTileJSON().legend);
         }
     };
