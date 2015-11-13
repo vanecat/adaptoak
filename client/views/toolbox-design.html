@@ -1,0 +1,59 @@
+<!-- Selections of Typologies/Adaptation Strategies -->
+<div data-sidenav></div>
+<div class="content">
+
+  <h1>Adapt Toolbox</h1>
+
+
+  <div class="toolbox-design">
+    <div>
+
+      <!-- Typology -->
+      <div class="typology">
+        <div class="item" ng-class="getTypologyState(t)"
+             ng-repeat="t in typologies"
+             ng-click="selectTypology(t)"
+        >
+          <div>{{t.label}}</div>
+          <img ng-src="{{getIconPath('typology', t)}}" />
+        </div>
+      </div>
+
+      <!--Adaptation-->
+      <div class="adaptation">
+        <div class="item" ng-class="getAdaptationState(a)"
+             ng-repeat="a in adaptations"
+             ng-click="selectAdaptation(a)"
+             ng-if="isTypologyAdaptationApplicable(a)"
+        >
+          <div>{{a.label}}</div>
+          <img ng-src="{{getIconPath('adaptation', a)}}" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Results / Services Data -->
+    <div>
+
+      <div class="typologyAdaptation" ng-if="hasResult()">
+        <div class="item">
+          <div>{{getAdaptation().label}}</div>
+          <img ng-src="{{getIconPath('adaptation', getAdaptation())}}" />
+        </div>
+        <span>+</span>
+        <div class="item">
+          <div>{{getTypology().label}}</div>
+          <img ng-src="{{getIconPath('typology', getTypology())}}" />
+        </div>
+        <span>=</span>
+        <div class="item">
+          <img ng-src="{{getTypologyAdaptationIconPath()}}" />
+        </div>
+
+        <div>Services Data.... $$$$ $$$$ $$$</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
