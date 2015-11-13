@@ -76,6 +76,15 @@ gulp.task('views', function() {
   .pipe(gulp.dest('./public/views/'));
 });
 
+// Views task
+gulp.task('static', function() {
+
+  // Any other view files from client/views
+  gulp.src('./client/static/**/*')
+  // Will be put in the public/views folder
+  .pipe(gulp.dest('./public/static/'));
+});
+
 gulp.task('watch', ['serve', 'lint'], function() {
   isWatching = true
   // Start live reload server
@@ -109,9 +118,9 @@ gulp.on('stop', function() {
 });
 
 // Dev task
-gulp.task('dev', ['views', 'styles', 'lint', 'browserify', 'watch'], function() {});
+gulp.task('dev', ['views', 'static', 'styles', 'lint', 'browserify', 'watch'], function() {});
 
 // Build task
-gulp.task('build', ['views', 'styles', 'lint', 'browserify'], function() {});
+gulp.task('build', ['views', 'static', 'styles', 'lint', 'browserify'], function() {});
 
 gulp.task('default', ['dev']);
