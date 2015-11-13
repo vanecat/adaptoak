@@ -113,7 +113,7 @@ function bootstrapPublicHtmlTemplates(appIndexHtml) {
 
 // HTML5 Pushstate mode
 app.get('*', function(req, res) {
-  var indexHtml = fs.readFileSync(path.join(__dirname, '/client/views/', 'index.html'), {encoding: 'utf-8'});
+  var indexHtml = fs.readFileSync(path.join(__dirname, '/client/', 'index.html'), {encoding: 'utf-8'});
   var indexHtmlWithBootstrappedTemplates = bootstrapPublicHtmlTemplates(indexHtml);
 
   // EITHER the bootstrapped templates (if set) OR plain old Index
