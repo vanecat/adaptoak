@@ -132,7 +132,6 @@ exports.controller = function($scope, CustomStateService) {
 
 
   $scope.selectTypology = function (item) {
-    console.log('select typology' + item.)
     if (item == service.getSelectedTypology()) {
       return;
     }
