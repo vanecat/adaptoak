@@ -37,20 +37,25 @@ app.config(function($locationProvider, $stateProvider) {
   $stateProvider
   .state('home', {
     url: '/',
-    templateUrl: 'views/home.html',
-    controller: require('./controllers/ExampleCtrl').inject(app),
+    templateUrl: 'home_html',
+    controller: require('./controllers/ExampleCtrl').inject(app)
   })
   .state('map', {
     url: '/map/:map_url',
     controller: require('./controllers/MapCtrl').inject(app),
-    templateUrl: 'views/map.html'
+    templateUrl: 'map_html'
   })
   .state('toolbox', {
     url: '/toolbox',
     controller: require('./controllers/ToolboxCtrl').inject(app),
-    templateUrl: 'views/toolbox.html'
+    templateUrl: 'toolbox_html'
   });
   
 });
 
-app.run();
+app.run(function($templateCache) {
+  $templateCache.put('home_html', document.getElementById('home.html').innerHTML);
+  $templateCache.put('map_html', document.getElementById('map.html').innerHTML);
+  $templateCache.put('toolbox_html', document.getElementById('toolbox.html').innerHTML);
+  $templateCache.put('sidenav_html', document.getElementById('sidenav.html').innerHTML);
+});

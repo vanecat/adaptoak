@@ -85,9 +85,39 @@ if(USE_API) {
 
 }
 
+/**
+ * Return the string with the template inserted into the appropriate flag slot
+ * @param {string} appIndexHtml
+ * @returns {bool|string}
+ */
+function bootstrapPublicHtmlTemplates(appIndexHtml) {
+  var templateFlag = '<!--templates-->'; // where templates will be inserted
+  var templateDir = path.join(__dirname, '/client/views/');
+
+  // if there is no template flag, don't
+  if (appIndexHtml.indexOf(templateFlag) < 0) {
+    return false;
+  }
+
+  var templateString = '';
+  var templateNames = fs.readdirSync(templateDir);
+  for(var i = 0; i < templateNames.length; i++) {
+    var tName = templateNames[i],
+        tPathName = templateDir + '/' + tName;
+    var file = fs.readFileSync(tPathName, {encoding: 'utf-8'});
+    templateString += '<div id="'+tName+'">\n' + file + '\n</div>\n';
+  }
+
+  return appIndexHtml.replace(templateFlag, templateString);
+}
+
 // HTML5 Pushstate mode
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public', 'index.html'));
+  var indexHtml = fs.readFileSync(path.join(__dirname, '/client/views/', 'index.html'), {encoding: 'utf-8'});
+  var indexHtmlWithBootstrappedTemplates = bootstrapPublicHtmlTemplates(indexHtml);
+
+  // EITHER the bootstrapped templates (if set) OR plain old Index
+  res.send(indexHtmlWithBootstrappedTemplates || indexHtml);
 });
 
 if(!module.parent) {

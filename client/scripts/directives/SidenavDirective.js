@@ -15,7 +15,7 @@ exports.directive = function() {
 
   return {
     restrict: 'A',
-    templateUrl: 'views/sidenav.html',
+    templateUrl: 'sidenav_html',
     link: link
   }
 };

@@ -69,10 +69,6 @@ gulp.task('browserify', function() {
 
 // Views task
 gulp.task('views', function() {
-  // Get our index.html
-  gulp.src('./client/index.html')
-  // And put it in the public folder
-  .pipe(gulp.dest('./public/'));
 
   // Any other view files from client/views
   gulp.src('./client/views/**/*')
