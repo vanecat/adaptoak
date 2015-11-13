@@ -49,6 +49,11 @@ app.config(function($locationProvider, $stateProvider) {
     url: '/toolbox',
     controller: require('./controllers/ToolboxCtrl').inject(app),
     templateUrl: 'toolbox_html'
+  })
+  .state('toolbox-design', {
+    url: '/toolbox/design',
+    controller: require('./controllers/ToolboxDesignCtrl').inject(app),
+    templateUrl: 'toolbox_design_html'
   });
   
 });
@@ -57,5 +62,6 @@ app.run(function($templateCache) {
   $templateCache.put('home_html', document.getElementById('home.html').innerHTML);
   $templateCache.put('map_html', document.getElementById('map.html').innerHTML);
   $templateCache.put('toolbox_html', document.getElementById('toolbox.html').innerHTML);
+  $templateCache.put('toolbox_design_html', document.getElementById('toolbox-design.html').innerHTML);
   $templateCache.put('sidenav_html', document.getElementById('sidenav.html').innerHTML);
 });

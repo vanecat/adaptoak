@@ -1,7 +1,7 @@
 'use strict';
 
 exports.inject = function(app) {
-  app.controller('TestCtrl', exports.controller);
+  app.controller('ToolboxCtrl', exports.controller);
   return exports.controller;
 };
 
